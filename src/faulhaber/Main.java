@@ -1,58 +1,45 @@
 package faulhaber;
 
-import javax.swing.JOptionPane;
-import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.Window;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JToolBar;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Dimension;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.AbstractAction;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.comm.SerialPort;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Component;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 public class Main {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	
+	
+	
 	
 	private JPanel panel;
+	   int margleft =20;
+	    int margtop =20;
+	    int vgap =40;
+	    int hgap =60;
+	    int hgap1 = 100;
+	   
+	    protected OutputStream outputStream = null;   
+	    JPanel jpanelconfig;
+	    String portname;
+	    String botelv;
+	    String guixing;
 
 	/**
 	 * Launch the application.
@@ -90,7 +77,7 @@ public class Main {
 		
 		//Dimension screensize=Toolkit.getDefaultToolkit().getScreenSize();   
 		
-		frame.setBounds(100, 100, 800, 600);
+		frame.setBounds(100, 100, 1100, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -113,9 +100,11 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				
 				
-				frame.getContentPane().add(panel, BorderLayout.CENTER);
+				frame.getContentPane().add(panel);
+				panel.setBounds(0, 0, 1500, 800);
 				panel.setVisible(true);
 				frame.setVisible(true);
+				jpanelconfig.setVisible(false);
 			
 			}
 		});
@@ -136,42 +125,43 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				
 				
-			
-				
 				
 				panel.setVisible(false);
-				JPanel jpanelconfig= new JPanel();
-				frame.getContentPane().add(jpanelconfig, BorderLayout.CENTER);
+				jpanelconfig= new JPanel();
+				frame.getContentPane().add(jpanelconfig);
+				jpanelconfig.setBounds(0, 0, 800, 600);
 				jpanelconfig.setLayout(null);
 		        				
-				JLabel lblDd = new JLabel("\u8F68\u578B\uFF1A");
-				lblDd.setBounds(31, 66, 102, 21);
+			 
+				
+				JLabel lblDd = new JLabel("¹ìÐÍ:");
+				lblDd.setBounds(margleft, margtop, 50, 30);
 				jpanelconfig.add(lblDd);
 				
 				String[] item = {"60","70","45"};
 				JComboBox<String> comboBox = new JComboBox<String>(item);
-				comboBox.setBounds(164, 63, 123, 27);
+				comboBox.setBounds(margleft+hgap1, margtop, 100, 30);
 				jpanelconfig.add(comboBox);
 				comboBox.setSelectedIndex(0);
 				
-				JLabel label = new JLabel("\u710A\u7F1D\u5E95\u5BBD\uFF1A");
-				label.setBounds(31, 118, 102, 21);
+				JLabel label = new JLabel("º¸·ìµ×¿í:");
+				label.setBounds(margleft, margtop+vgap, 80, 30);
 				jpanelconfig.add(label);
 				
-				JLabel label_1 = new JLabel("\u710A\u7F1D\u9876\u5BBD\uFF1A");
-				label_1.setBounds(31, 154, 102, 21);
+				JLabel label_1 = new JLabel("º¸·ì¶¥¿í:");
+				label_1.setBounds(margleft, margtop+2*vgap, 80, 30);
 				jpanelconfig.add(label_1);
 				
-				JLabel label_2 = new JLabel("\u710A\u4E1D\u66F2\u7387\u534A\u5F84\uFF1A");
-				label_2.setBounds(31, 190, 102, 21);
+				JLabel label_2 = new JLabel("º¸Ë¿ÇúÂÊ°ë¾¶:");
+				label_2.setBounds(margleft, margtop+3*vgap, 100, 30);
 				jpanelconfig.add(label_2);
 				
-				JLabel label_3 = new JLabel("\u73AF\u5883\u6E29\u5EA6\uFF1A");
-				label_3.setBounds(31, 226, 102, 21);
+				JLabel label_3 = new JLabel("»·¾³ÎÂ¶È:");
+				label_3.setBounds(margleft, margtop+4*vgap, 80, 30);
 				jpanelconfig.add(label_3);
 				
-				textField = new JTextField();
-				textField.setBounds(164, 104, 123, 27);
+				JTextField textField = new JTextField();
+				textField.setBounds(margleft+hgap1, margtop+vgap, 100, 30);
 				jpanelconfig.add(textField);
 				textField.setColumns(10);
 				textField.addKeyListener(new KeyAdapter(){
@@ -186,9 +176,9 @@ public class Main {
 				});
 				
 				
-				textField_1 = new JTextField();
+				JTextField textField_1 = new JTextField();
 				textField_1.setColumns(10);
-				textField_1.setBounds(164, 146, 123, 27);
+				textField_1.setBounds(margleft+hgap1, margtop+vgap*2, 100, 30);
 				jpanelconfig.add(textField_1);
 				textField_1.addKeyListener(new KeyAdapter(){
 					public void keyTyped(KeyEvent e) {
@@ -201,9 +191,9 @@ public class Main {
 					}
 				});
 				
-				textField_2 = new JTextField();
+				JTextField textField_2 = new JTextField();
 				textField_2.setColumns(10);
-				textField_2.setBounds(164, 187, 123, 27);
+				textField_2.setBounds(margleft+hgap1, margtop+vgap*3, 100, 30);
 				jpanelconfig.add(textField_2);
 				textField_2.addKeyListener(new KeyAdapter(){
 					public void keyTyped(KeyEvent e) {
@@ -216,9 +206,9 @@ public class Main {
 					}
 				});
 				
-				textField_3 = new JTextField();
+				JTextField textField_3 = new JTextField();
 				textField_3.setColumns(10);
-				textField_3.setBounds(164, 223, 123, 27);
+				textField_3.setBounds(margleft+hgap1, margtop+vgap*4, 100, 30);
 				jpanelconfig.add(textField_3);
 				textField_3.addKeyListener(new KeyAdapter(){
 					public void keyTyped(KeyEvent e) {
@@ -231,8 +221,8 @@ public class Main {
 					}
 				});
 				
-				JButton button = new JButton("\u53D6\u6D88");
-				button.setBounds(31, 304, 123, 29);
+				JButton button = new JButton("È¡Ïû");
+				button.setBounds(margleft, margtop+vgap*5, 80, 30);
 				jpanelconfig.add(button);
 				button.addActionListener(new ActionListener() {
 		            @Override
@@ -244,8 +234,8 @@ public class Main {
 		            }
 		        });
 				
-				JButton button_1 = new JButton("\u786E\u5B9A");
-				button_1.setBounds(164, 304, 123, 29);
+				JButton button_1 = new JButton("È·ÈÏ");
+				button_1.setBounds(margleft+hgap1+20, margtop+vgap*5, 80, 30);
 				jpanelconfig.add(button_1);
 				button_1.addActionListener(new ActionListener() {
 		            @Override
@@ -270,30 +260,299 @@ public class Main {
 		
 		JMenuItem menuItem_1 = new JMenuItem("\u5E2E\u52A9");
 		mnNewMenu_1.add(menuItem_1);
+		frame.getContentPane().setLayout(null);
+	
 		
-		panel = new JPanel();	
-		panel.setLayout(new BorderLayout(0, 0));
+		panel = new JPanel();			
+		panel.setLayout(null);
 		
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.add(new JLabel("ddddddddd"));
-		panel.add(panel_1, BorderLayout.WEST);	
+	      panel_1.setLayout(null);
+	      
+	    
+	  
+	  
+	  
+	    JLabel label_1 = new JLabel("\u8BBE\u7F6E:");	    
+	    JLabel label_2 = new JLabel("¹ìµ×:");
+	    JTextField tf_1 = new JTextField();
+	    tf_1.setColumns(10);
+	    
+	    JLabel label_3 = new JLabel("Èý½ÇÇø:");
+	    JTextField tf_2 = new JTextField();
+	    tf_2.setColumns(10);
+	    
+	    
+	    JLabel label_4 = new JLabel("¹ìÑü:");
+	    JTextField tf_3 = new JTextField();
+	    tf_3.setColumns(10);
+	    
+	    
+	    JLabel label_5 = new JLabel("¹ìò¦:");
+	    JTextField tf_4 = new JTextField();
+	    tf_4.setColumns(10);
+	    
+	    JLabel label_6 = new JLabel("¹ìÍ·:");
+	    JTextField tf_5 = new JTextField();
+	    tf_5.setColumns(10);
+	    
+		JLabel label_8 = new JLabel("ÃüÁî:");
+		label_8.setBounds(19, 375, 50, 30);
+		panel_1.add(label_8);
 		
 		
-		
-		JPanel panel_2 = new JPanel();
-		panel.add(panel_2, BorderLayout.CENTER);
-		
-		JPanel panel_3 = new JPanel();
-		panel.add(panel_3, BorderLayout.EAST);
-		
-		
+	    
+	    panel_1.add(label_1);
+	    label_1.setBounds(margleft, margtop, 50, 30);   
+	    
+	    panel_1.add(label_2);
+	    label_2.setBounds(margleft, margtop+vgap, 50, 30);   
+	    
+	    panel_1.add(tf_1);
+	    
+	    tf_1.setBounds(80, 60, 138, 30);
+	    tf_1.setColumns(10);
+	    
+	    
+	    panel_1.add(label_3);
+	    label_3.setBounds(20, 100, 50, 30);   
+	    
+    panel_1.add(tf_2);
+	    
+	    tf_2.setBounds(80, 100, 138, 30);
+	    tf_2.setColumns(10);
+	    
+	    
+	    panel_1.add(label_4);
+	    label_4.setBounds(20, 140, 50, 30);   
+	    
+    panel_1.add(tf_3);
+	    
+	    tf_3.setBounds(80, 140, 138, 30);
+	    tf_3.setColumns(10);
+	    
+	    
+	    
+	    panel_1.add(label_5);
+	    label_5.setBounds(20, 180, 50, 30);   
+	    
+    panel_1.add(tf_4);
+	    
+	    tf_4.setBounds(80, 180, 138, 30);
+	    tf_4.setColumns(10);
+	    
+	    
+	    
+	    panel_1.add(label_6);
+	    label_6.setBounds(20, 220, 50, 30);   
+         panel_1.add(tf_5);
+	    
+	    tf_5.setBounds(80, 220, 138, 30);
+	    tf_5.setColumns(10);
+	    
+	     
+	   	JPanel panel_2 = new JPanel();
+	      panel_2.setLayout(null);
+	    
+	      JLabel label_7 = new JLabel("¿ØÖÆÃæ°å:");
+	     
+	      
+	      panel_2.add(label_7);
+	      label_7.setBounds(margleft, margtop, 100, 30);
+	    
 		
 	
+		JButton btnNewButton = new JButton("ÉÏ");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(63, 67, 54, 29);
+		panel_2.add(btnNewButton);
+		
+		JButton button = new JButton("×ó");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button.setBounds(30, 105, 54, 29);
+		panel_2.add(button);
+		
+		JButton button_1 = new JButton("ÓÒ");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_1.setBounds(90, 105, 54, 29);
+		panel_2.add(button_1);
+		
+		JButton button_2 = new JButton("ÏÂ");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_2.setBounds(63, 138, 54, 29);
+		panel_2.add(button_2);
+		
+		JButton button_3 = new JButton("×ó");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_3.setBounds(30, 196, 54, 29);
+		panel_2.add(button_3);
+		
+		JButton button_4 = new JButton("ÓÒ");
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_4.setBounds(90, 196, 54, 29);
+		panel_2.add(button_4);
+		
+		JButton button_5 = new JButton("Ë³");
+		button_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_5.setBounds(30, 240, 54, 29);
+		panel_2.add(button_5);
+		
+		JButton button_6 = new JButton("È·¶¨");
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_6.setBounds(183, 152, 100, 29);
+		panel_2.add(button_6);
+		
+		JLabel lblNewLabel = new JLabel("¹Ø");
+		lblNewLabel.setBounds(183, 54, 100, 21);
+		panel_2.add(lblNewLabel);
+		
+		JButton button_7 = new JButton("Äæ");
+		button_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_7.setBounds(90, 240, 54, 29);
+		panel_2.add(button_7);
+		
+		JToggleButton toggleButton = new JToggleButton("¼Ð½ô");
+		toggleButton.setBounds(183, 240, 100, 29);
+		panel_2.add(toggleButton);
+		
+		JToggleButton toggleButton_1 = new JToggleButton("¿ª¹Ø");
+		toggleButton_1.setBounds(310, 50, 100, 29);
+		panel_2.add(toggleButton_1);
+		
+		JToggleButton toggleButton_2 = new JToggleButton("ÔÝÍ£");
+		toggleButton_2.setBounds(183, 196, 100, 29);
+		panel_2.add(toggleButton_2);
+		
+		JButton button_8 = new JButton("¸´Î»");
+		button_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_8.setBounds(310, 105, 100, 29);
+		panel_2.add(button_8);
+		
+		JButton button_9 = new JButton("½µÎÂ");
+		button_9.setBounds(310, 171, 100, 29);
+		panel_2.add(button_9);
+		
+		JButton button_10 = new JButton("ËÍË¿");
+		button_10.setBounds(310, 240, 100, 29);
+		panel_2.add(button_10);
+		
+		
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+	
+		
+		JLabel label = new JLabel("²¨ÐÎÏÔÊ¾:");
+		label.setBounds(margleft,margtop,100,30);
+		
+		panel_3.add(label);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBounds(20, 60, 365, 200);
+		panel_4.setBackground(Color.BLUE);
+		panel_3.add(panel_4);
 		
 		
 		
 		
+		
+		
+		panel.add(panel_1);		
+		panel_1.setBounds(0, 0, 230, 501);
+		
+		JTextField textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(80, 377, 138, 30);
+		panel_1.add(textField_4);
+		
+		JButton btnNewButton_1 = new JButton("\u53D1\u9001");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1.setBounds(137, 422, 81, 29);
+		panel_1.add(btnNewButton_1);
+		
+		JLabel label_9 = new JLabel("¶Ë¿Ú:");
+		label_9.setBounds(19, 305, 50, 30);
+		panel_1.add(label_9);
+		
+		JLabel label_10 = new JLabel("²¨ÌØÂÊ:");
+		label_10.setBounds(19, 337, 50, 30);
+		panel_1.add(label_10);
+		
+		String[] itemscom=new String[]{"Com1","Com2","Com3"};
+
+		JComboBox<String> comboBox = new JComboBox<String>(itemscom);
+		comboBox.setToolTipText("");
+		comboBox.setBounds(80, 307, 138, 27);
+		comboBox.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent e) {
+		    	portname = (String)comboBox.getSelectedItem();		    	
+		      }
+		    });
+
+		panel_1.add(comboBox);
+		
+		String[] itemsbau=new String[]{"9600","19200"};
+		JComboBox<String> comboBox_1 = new JComboBox<String> (itemsbau);
+		comboBox_1.setBounds(80, 339, 138, 27);
+		comboBox_1.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent e) {
+		    	botelv=(String)comboBox_1.getSelectedItem();
+		      }
+		    });
+		
+		panel_1.add(comboBox_1);
+			
+		
+		panel.add(panel_2);
+		panel_2.setBounds(230, 0, 430, 501);
+		
+		panel.add(panel_3);
+		panel_3.setBounds(660, 0, 400, 501);
+		
+		
+				
 		
 	}
+	
+	
+	
+	
+	public static String PortName;  
+	public static SerialPort serialport;
+    public static OutputStream out;  
+	public static InputStream in;  
 }
