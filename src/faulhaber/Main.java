@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-import javax.comm.SerialPort;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,7 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import javax.swing.JToggleButton; 
 
 public class Main {
 
@@ -28,17 +28,17 @@ public class Main {
 	
 	
 	
-	private JPanel panel;
+	private JPanel panel = new JPanel();
 	   int margleft =20;
 	    int margtop =20;
 	    int vgap =40;
 	    int hgap =60;
 	    int hgap1 = 100;
 	   
-	    protected OutputStream outputStream = null;   
-	    JPanel jpanelconfig;
-	    String portname;
-	    String botelv;
+	    
+	    JPanel jpanelconfig = new JPanel();
+	    String portname="COM3";
+	    String botelv="9600";
 	    String guixing;
 
 	/**
@@ -73,7 +73,7 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setTitle("\u710A\u63A5\u5DE5\u827A\u5B9E\u9A8C\u8F6F\u4EF6");
+		frame.setTitle("焊接工艺实验软件");
 		
 		//Dimension screensize=Toolkit.getDefaultToolkit().getScreenSize();   
 		
@@ -83,19 +83,19 @@ public class Main {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
-		JMenu menu = new JMenu("\u6587\u4EF6");
+		JMenu menu = new JMenu("文件");
 		menuBar.add(menu);
 		
-		JMenuItem mntmDaad = new JMenuItem("DAAD\u6587\u4EF6\u8BFB\u5165");
+		JMenuItem mntmDaad = new JMenuItem("DAAD文件读入");
 		menu.add(mntmDaad);
 		
-		JMenuItem menuItem = new JMenuItem("\u9000\u51FA");
+		JMenuItem menuItem = new JMenuItem("退出");
 		menu.add(menuItem);
 		
-		JMenu mnNewMenu = new JMenu("\u64CD\u4F5C");
+		JMenu mnNewMenu = new JMenu("操作");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("\u8FDE\u63A5");
+		JMenuItem mntmNewMenuItem = new JMenuItem("启动");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -110,16 +110,12 @@ public class Main {
 		});
 		mnNewMenu.add(mntmNewMenuItem);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("\u542F\u52A8");
-		mnNewMenu.add(mntmNewMenuItem_2);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("\u505C\u6B62");
-		mnNewMenu.add(mntmNewMenuItem_3);
 		
-		JMenu mnNewMenu_1 = new JMenu("\u8BBE\u7F6E");
+		JMenu mnNewMenu_1 = new JMenu("设置");
 		menuBar.add(mnNewMenu_1);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("\u8FDE\u63A5\u8BBE\u7F6E");
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("预设参数");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -255,11 +251,12 @@ public class Main {
 		
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("\u53C2\u6570\u8BBE\u7F6E");
-		mnNewMenu_1.add(mntmNewMenuItem_4);
 		
-		JMenuItem menuItem_1 = new JMenuItem("\u5E2E\u52A9");
+		
+		JMenuItem menuItem_1 = new JMenuItem("帮助");
 		mnNewMenu_1.add(menuItem_1);
+		
+		
 		frame.getContentPane().setLayout(null);
 	
 		
@@ -371,7 +368,7 @@ public class Main {
 		btnNewButton.setBounds(63, 67, 54, 29);
 		panel_2.add(btnNewButton);
 		
-		JButton button = new JButton("左");
+		JButton button = new JButton("前");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -379,7 +376,7 @@ public class Main {
 		button.setBounds(30, 105, 54, 29);
 		panel_2.add(button);
 		
-		JButton button_1 = new JButton("右");
+		JButton button_1 = new JButton("后");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -414,6 +411,8 @@ public class Main {
 		JButton button_5 = new JButton("顺");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("4v-50");
+				System.out.println("4v-50");
 			}
 		});
 		button_5.setBounds(30, 240, 54, 29);
@@ -434,6 +433,8 @@ public class Main {
 		JButton button_7 = new JButton("逆");
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("4v50");
+				System.out.println("4v50");
 			}
 		});
 		button_7.setBounds(90, 240, 54, 29);
@@ -443,7 +444,25 @@ public class Main {
 		toggleButton.setBounds(183, 240, 100, 29);
 		panel_2.add(toggleButton);
 		
-		JToggleButton toggleButton_1 = new JToggleButton("开关");
+		JToggleButton toggleButton_1 = new JToggleButton("开");
+		toggleButton_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				 int state = e.getStateChange();
+				    if (state == ItemEvent.SELECTED) {
+				    	
+				    	cpport.writedata("4en");
+				    	toggleButton_1.setText("关");
+				    	System.out.println("4en");
+				    					    
+				    }  else {
+				    	
+				    	cpport.writedata("4di");
+				    	toggleButton_1.setText("开");
+				    	System.out.println("4di");
+				    }
+				
+			}
+		});
 		toggleButton_1.setBounds(310, 50, 100, 29);
 		panel_2.add(toggleButton_1);
 		
@@ -491,7 +510,7 @@ public class Main {
 		panel.add(panel_1);		
 		panel_1.setBounds(0, 0, 230, 501);
 		
-		JTextField textField_4 = new JTextField();
+		JTextField textField_4 = new JTextField("4en");
 		textField_4.setColumns(10);
 		textField_4.setBounds(80, 377, 138, 30);
 		panel_1.add(textField_4);
@@ -499,9 +518,14 @@ public class Main {
 		JButton btnNewButton_1 = new JButton("\u53D1\u9001");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				cpport.writedata(textField_4.getText());	
+				System.out.println(textField_4.getText());
+				
+				
 			}
 		});
-		btnNewButton_1.setBounds(137, 422, 81, 29);
+		btnNewButton_1.setBounds(137, 436, 81, 29);
 		panel_1.add(btnNewButton_1);
 		
 		JLabel label_9 = new JLabel("端口:");
@@ -512,29 +536,73 @@ public class Main {
 		label_10.setBounds(19, 337, 50, 30);
 		panel_1.add(label_10);
 		
-		String[] itemscom=new String[]{"Com1","Com2","Com3"};
-
-		JComboBox<String> comboBox = new JComboBox<String>(itemscom);
+		final String[] itemscom=new String[]{"COM1","COM2","COM3","COM4"};
+		DefaultComboBoxModel<String> comboModel = new DefaultComboBoxModel<String>(itemscom);
+		JComboBox comboBox = new JComboBox(comboModel);
+		comboBox.setSelectedItem("COM3");
 		comboBox.setToolTipText("");
 		comboBox.setBounds(80, 307, 138, 27);
 		comboBox.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent e) {
-		    	portname = (String)comboBox.getSelectedItem();		    	
+		    	portname = (String)comboBox.getSelectedItem();	
+		    	System.out.println(portname);
 		      }
 		    });
 
 		panel_1.add(comboBox);
 		
-		String[] itemsbau=new String[]{"9600","19200"};
-		JComboBox<String> comboBox_1 = new JComboBox<String> (itemsbau);
+		final String[] itemsbau=new String[]{"9600","19200"};
+		DefaultComboBoxModel<String> comboModel_1 = new DefaultComboBoxModel<String>(itemsbau);
+		JComboBox comboBox_1 = new JComboBox(comboModel_1);
 		comboBox_1.setBounds(80, 339, 138, 27);
 		comboBox_1.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent e) {
 		    	botelv=(String)comboBox_1.getSelectedItem();
+		    	System.out.println(botelv);
 		      }
 		    });
 		
 		panel_1.add(comboBox_1);
+		
+		JToggleButton toggleButton_3 = new JToggleButton("连接");
+		toggleButton_3.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				
+				 int state = e.getStateChange();
+				    if (state == ItemEvent.SELECTED) {
+				    	
+				    	try
+				    	{
+				    	cpport.connect(portname, botelv);
+				    	
+				    	toggleButton_3.setSelected(true);
+				    	toggleButton_3.setText("断开");
+				    	lblNewLabel.setText("已连接");
+				    	}
+				    	catch (Exception e1)
+				    	{
+				    	toggleButton_3.setSelected(false);
+				    	e1.printStackTrace();
+				    	}
+				    					    
+				    }  else {
+				    	cpport.close();
+				      toggleButton_3.setSelected(false);
+				      toggleButton_3.setText("连接");
+				      lblNewLabel.setText("连接断开");
+				     
+				      
+				    }
+			}
+		});
+		
+		
+		
+		
+		
+		
+		toggleButton_3.setBounds(12, 436, 81, 28);
+		panel_1.add(toggleButton_3);
 			
 		
 		panel.add(panel_2);
@@ -551,8 +619,6 @@ public class Main {
 	
 	
 	
-	public static String PortName;  
-	public static SerialPort serialport;
-    public static OutputStream out;  
-	public static InputStream in;  
+	
+   Comport cpport = new Comport();
 }
