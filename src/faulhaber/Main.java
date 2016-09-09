@@ -8,10 +8,18 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,14 +27,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton; 
+import javax.swing.JToggleButton;
+import javax.swing.filechooser.FileNameExtensionFilter; 
 
 public class Main {
 
 	private JFrame frame;
-	
-	
-	
+	List<String> lis = new ArrayList<String>();
+	Vector<String> vec = new Vector<String>();
+	JLabel lblNewLabel_1 = new JLabel("无轨迹");
 	
 	private JPanel panel = new JPanel();
 	   int margleft =20;
@@ -77,7 +86,7 @@ public class Main {
 		
 		//Dimension screensize=Toolkit.getDefaultToolkit().getScreenSize();   
 		
-		frame.setBounds(100, 100, 1100, 600);
+		frame.setBounds(100, 100, 1080, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -88,6 +97,59 @@ public class Main {
 		
 		JMenuItem mntmDaad = new JMenuItem("DAAD文件读入");
 		menu.add(mntmDaad);
+		
+		JMenuItem mntmguiji = new JMenuItem("轨迹文件读入");
+		mntmguiji.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser jfc = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter( "CSV FIles", "csv"); 
+				jfc.setFileFilter(filter); 
+				int returnVal = jfc.showOpenDialog(frame);
+				if(returnVal == JFileChooser.APPROVE_OPTION)
+				{ 
+					
+					
+					System.out.println("You chose to open this file: " + jfc.getSelectedFile().getName());	
+				 try {
+					
+					BufferedReader buf = new BufferedReader(new FileReader(jfc.getSelectedFile()));
+					String readLine = ""; 
+					 while ((readLine = buf.readLine()) != null)                     //读取文件内容！！！！！！！！！ 
+				      { 
+				       lis.add(readLine);
+				      }					
+					
+					  for (int i = 0; i <lis.size(); i++) {
+						   System.out.println(lis.get(i));
+						  }
+					  
+					   lblNewLabel_1.setText(jfc.getSelectedFile().getName());
+					  
+				 } catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					lblNewLabel_1.setText("无轨迹");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					lblNewLabel_1.setText("无轨迹");
+				} 
+				}
+				else
+				{
+					 lblNewLabel_1.setText("无轨迹");
+				}
+				
+			}
+			
+			
+			
+		});
+		menu.add(mntmguiji);
+		
+		
 		
 		JMenuItem menuItem = new JMenuItem("退出");
 		menu.add(menuItem);
@@ -363,6 +425,7 @@ public class Main {
 		JButton btnNewButton = new JButton("上");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("3v-100");
 			}
 		});
 		btnNewButton.setBounds(63, 67, 54, 29);
@@ -371,6 +434,7 @@ public class Main {
 		JButton button = new JButton("前");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("2v-100");
 			}
 		});
 		button.setBounds(30, 105, 54, 29);
@@ -379,6 +443,7 @@ public class Main {
 		JButton button_1 = new JButton("后");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("2v100");
 			}
 		});
 		button_1.setBounds(90, 105, 54, 29);
@@ -387,6 +452,7 @@ public class Main {
 		JButton button_2 = new JButton("下");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("3v100");
 			}
 		});
 		button_2.setBounds(63, 138, 54, 29);
@@ -395,6 +461,7 @@ public class Main {
 		JButton button_3 = new JButton("左");
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("1v-100");
 			}
 		});
 		button_3.setBounds(30, 196, 54, 29);
@@ -403,6 +470,7 @@ public class Main {
 		JButton button_4 = new JButton("右");
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("1v100");
 			}
 		});
 		button_4.setBounds(90, 196, 54, 29);
@@ -411,8 +479,8 @@ public class Main {
 		JButton button_5 = new JButton("顺");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("4v-50");
-				System.out.println("4v-50");
+				cpport.writedata("4v-100");
+				
 			}
 		});
 		button_5.setBounds(30, 240, 54, 29);
@@ -421,6 +489,9 @@ public class Main {
 		JButton button_6 = new JButton("确定");
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				cpport.writedata("HO");
+				
 			}
 		});
 		button_6.setBounds(183, 152, 100, 29);
@@ -433,8 +504,8 @@ public class Main {
 		JButton button_7 = new JButton("逆");
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("4v50");
-				System.out.println("4v50");
+				cpport.writedata("4v100");
+				
 			}
 		});
 		button_7.setBounds(90, 240, 54, 29);
@@ -450,15 +521,15 @@ public class Main {
 				 int state = e.getStateChange();
 				    if (state == ItemEvent.SELECTED) {
 				    	
-				    	cpport.writedata("4en");
+				    	cpport.writedata("EN");
 				    	toggleButton_1.setText("关");
-				    	System.out.println("4en");
+				    	
 				    					    
 				    }  else {
 				    	
-				    	cpport.writedata("4di");
+				    	cpport.writedata("DI");
 				    	toggleButton_1.setText("开");
-				    	System.out.println("4di");
+				    	
 				    }
 				
 			}
@@ -466,13 +537,15 @@ public class Main {
 		toggleButton_1.setBounds(310, 50, 100, 29);
 		panel_2.add(toggleButton_1);
 		
-		JToggleButton toggleButton_2 = new JToggleButton("暂停");
-		toggleButton_2.setBounds(183, 196, 100, 29);
-		panel_2.add(toggleButton_2);
-		
 		JButton button_8 = new JButton("复位");
 		button_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				cpport.writedata("LA0");
+				cpport.writedata("SP200");
+				cpport.writedata("NP");
+				cpport.writedata("M");
+				
 			}
 		});
 		button_8.setBounds(310, 105, 100, 29);
@@ -510,7 +583,7 @@ public class Main {
 		panel.add(panel_1);		
 		panel_1.setBounds(0, 0, 230, 501);
 		
-		JTextField textField_4 = new JTextField("4en");
+		JTextField textField_4 = new JTextField("EN");
 		textField_4.setColumns(10);
 		textField_4.setBounds(80, 377, 138, 30);
 		panel_1.add(textField_4);
@@ -607,6 +680,56 @@ public class Main {
 		
 		panel.add(panel_2);
 		panel_2.setBounds(230, 0, 430, 501);
+		
+		JButton button_11 = new JButton("运行轨迹");
+		button_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 
+				for (int i=0;i<lis.size();i++)
+				{
+					String str = lis.get(i);
+					String[] arrstr = str.split(";");
+					for (int j=1;j<arrstr.length;j++)
+					{
+						vec.add(arrstr[j]);
+						
+					}
+					
+					  
+				}
+				
+				
+				for (int i = 0; i <vec.size(); i++) {
+					if (vec.get(i)!="")
+					{
+					   cpport.writedata(vec.get(i));
+					   System.out.println(vec.get(i));
+					  }
+				}
+				
+				
+			}
+		});
+		button_11.setBounds(310, 430, 100, 29);
+		panel_2.add(button_11);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.BLUE);
+		panel_5.setBounds(30, 330, 253, 129);
+		panel_2.add(panel_5);
+		
+		
+		lblNewLabel_1.setBounds(310, 400, 55, 18);
+		panel_2.add(lblNewLabel_1);
+		
+		JButton button_12 = new JButton("停止");
+		button_12.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cpport.writedata("v0");
+			}
+		});
+		button_12.setBounds(183, 196, 100, 29);
+		panel_2.add(button_12);
 		
 		panel.add(panel_3);
 		panel_3.setBounds(660, 0, 400, 501);
