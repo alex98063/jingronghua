@@ -34,8 +34,9 @@ public class Main {
 
 	private JFrame frame;
 	List<String> lis = new ArrayList<String>();
-	Vector<String> vec = new Vector<String>();
+	
 	JLabel lblNewLabel_1 = new JLabel("无轨迹");
+
 	
 	private JPanel panel = new JPanel();
 	   int margleft =20;
@@ -116,6 +117,8 @@ public class Main {
 					
 					BufferedReader buf = new BufferedReader(new FileReader(jfc.getSelectedFile()));
 					String readLine = ""; 
+					
+					lis = new ArrayList<String>();
 					 while ((readLine = buf.readLine()) != null)                     //读取文件内容！！！！！！！！！ 
 				      { 
 				       lis.add(readLine);
@@ -425,6 +428,7 @@ public class Main {
 		JButton btnNewButton = new JButton("上");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//cpport.writedata("3SP100");
 				cpport.writedata("3v-100");
 			}
 		});
@@ -434,7 +438,8 @@ public class Main {
 		JButton button = new JButton("前");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("2v-100");
+//				cpport.writedata("2SP300");
+				cpport.writedata("2v-300");
 			}
 		});
 		button.setBounds(30, 105, 54, 29);
@@ -443,7 +448,8 @@ public class Main {
 		JButton button_1 = new JButton("后");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("2v100");
+//				cpport.writedata("2SP300");
+				cpport.writedata("2v300");
 			}
 		});
 		button_1.setBounds(90, 105, 54, 29);
@@ -452,6 +458,7 @@ public class Main {
 		JButton button_2 = new JButton("下");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				cpport.writedata("3SP100");
 				cpport.writedata("3v100");
 			}
 		});
@@ -461,7 +468,8 @@ public class Main {
 		JButton button_3 = new JButton("左");
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("1v-100");
+//				cpport.writedata("1SP300");
+				cpport.writedata("1v-300");
 			}
 		});
 		button_3.setBounds(30, 196, 54, 29);
@@ -470,7 +478,8 @@ public class Main {
 		JButton button_4 = new JButton("右");
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("1v100");
+//				cpport.writedata("1SP300");
+				cpport.writedata("1v300");
 			}
 		});
 		button_4.setBounds(90, 196, 54, 29);
@@ -479,6 +488,7 @@ public class Main {
 		JButton button_5 = new JButton("顺");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				cpport.writedata("4SP100");
 				cpport.writedata("4v-100");
 				
 			}
@@ -490,7 +500,10 @@ public class Main {
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				cpport.writedata("HO");
+				cpport.writedata("1HO");
+				cpport.writedata("2HO");
+				cpport.writedata("3HO");
+				cpport.writedata("4HO");
 				
 			}
 		});
@@ -504,6 +517,7 @@ public class Main {
 		JButton button_7 = new JButton("逆");
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				cpport.writedata("4SP100");
 				cpport.writedata("4v100");
 				
 			}
@@ -521,13 +535,20 @@ public class Main {
 				 int state = e.getStateChange();
 				    if (state == ItemEvent.SELECTED) {
 				    	
-				    	cpport.writedata("EN");
+				    	cpport.writedata("1EN");	
+				    	cpport.writedata("2EN");	
+				    	cpport.writedata("3EN");	
+				    	cpport.writedata("4EN");	
+				    	
 				    	toggleButton_1.setText("关");
 				    	
 				    					    
 				    }  else {
 				    	
-				    	cpport.writedata("DI");
+				    	cpport.writedata("1DI");
+				    	cpport.writedata("2DI");
+				    	cpport.writedata("3DI");
+				    	cpport.writedata("4DI");
 				    	toggleButton_1.setText("开");
 				    	
 				    }
@@ -541,10 +562,26 @@ public class Main {
 		button_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				cpport.writedata("LA0");
-				cpport.writedata("SP200");
-				cpport.writedata("NP");
-				cpport.writedata("M");
+				cpport.writedata("1LA0");
+				cpport.writedata("2LA0");
+				cpport.writedata("3LA0");
+				cpport.writedata("4LA0");
+				
+				cpport.writedata("1SP200");
+				cpport.writedata("2SP200");
+				cpport.writedata("3SP200");
+				cpport.writedata("4SP200");
+				
+				cpport.writedata("1NP");
+				cpport.writedata("2NP");
+				cpport.writedata("3NP");
+				cpport.writedata("4NP");
+				
+				cpport.writedata("1M");
+				cpport.writedata("2M");
+				cpport.writedata("3M");
+				cpport.writedata("4M");
+				
 				
 			}
 		});
@@ -583,7 +620,7 @@ public class Main {
 		panel.add(panel_1);		
 		panel_1.setBounds(0, 0, 230, 501);
 		
-		JTextField textField_4 = new JTextField("EN");
+		JTextField textField_4 = new JTextField("4EN");
 		textField_4.setColumns(10);
 		textField_4.setBounds(80, 377, 138, 30);
 		panel_1.add(textField_4);
@@ -593,7 +630,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				
 				cpport.writedata(textField_4.getText());	
-				System.out.println(textField_4.getText());
+				//System.out.println(textField_4.getText());
 				
 				
 			}
@@ -685,8 +722,11 @@ public class Main {
 		button_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 
+				
 				for (int i=0;i<lis.size();i++)
 				{
+
+					Vector<String> vec = new Vector<String>();
 					String str = lis.get(i);
 					String[] arrstr = str.split(";");
 					for (int j=1;j<arrstr.length;j++)
@@ -695,17 +735,17 @@ public class Main {
 						
 					}
 					
+					for (int k = 0; k <vec.size(); k++) {
+						if (vec.get(k)!="")
+						{
+						  cpport.writedata(vec.get(k));					 
+						 
+						  }
+					}
+					
 					  
-				}
+				}		
 				
-				
-				for (int i = 0; i <vec.size(); i++) {
-					if (vec.get(i)!="")
-					{
-					   cpport.writedata(vec.get(i));
-					   System.out.println(vec.get(i));
-					  }
-				}
 				
 				
 			}
@@ -725,7 +765,12 @@ public class Main {
 		JButton button_12 = new JButton("停止");
 		button_12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cpport.writedata("v0");
+//				cpport.writedata("SP0");
+				cpport.writedata("1V0");
+				cpport.writedata("2V0");
+				cpport.writedata("3V0");
+				cpport.writedata("4V0");
+				
 			}
 		});
 		button_12.setBounds(183, 196, 100, 29);
